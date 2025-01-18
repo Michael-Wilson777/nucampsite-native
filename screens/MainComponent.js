@@ -4,6 +4,8 @@ import Constants from "expo-constants";
 import CampsiteInfoScreen from "./CampsiteInfoScreen";
 import DirectoryScreen from "./DirectoryScreen";
 import HomeScreen from "./HomeScreen";
+import AboutScreen from "./AboutScreen";
+import ContactScreen from "./ContactScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
@@ -46,6 +48,27 @@ const DirectoryNavigator = () => {
   );
 };
 
+const AboutNavigator = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator initialRouteName="About" screenOptions={screenOptions}>
+      <Stack.Screen name='About' component={AboutScreen}/>
+    </Stack.Navigator>
+  )
+};
+
+const ContactNavigator = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator initialRouteName="Contact" screenOptions={screenOptions}>
+      <Stack.Screen name='ContactMain' component={ContactScreen} options={{title: 'Contact Us'}}/>
+    </Stack.Navigator>
+  )
+}
+
+
 const Main = () => {
   return (
     <View
@@ -74,6 +97,22 @@ const Main = () => {
           component={DirectoryNavigator}
           options={{
             title: "Campsite Directory",
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="AboutNav"
+          component={AboutNavigator}
+          options={{
+            title: "About Us",
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="ContactNav"
+          component={ContactNavigator}
+          options={{
+            title: "Contact Us",
             headerShown: false,
           }}
         />
