@@ -31,7 +31,7 @@ const HomeNavigator = () => {
 const DirectoryNavigator = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="Directory" screenOptions={screenOptions}>
+    <Stack.Navigator initialRouteName="DirectoryMain" screenOptions={screenOptions}>
       <Stack.Screen
         name="DirectoryMain"
         component={DirectoryScreen}
@@ -52,7 +52,7 @@ const AboutNavigator = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="About" screenOptions={screenOptions}>
+    <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name='About' component={AboutScreen}/>
     </Stack.Navigator>
   )
@@ -62,7 +62,8 @@ const ContactNavigator = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="Contact" screenOptions={screenOptions}>
+    <Stack.Navigator screenOptions={screenOptions}>
+
       <Stack.Screen name='ContactMain' component={ContactScreen} options={{title: 'Contact Us'}}/>
     </Stack.Navigator>
   )
