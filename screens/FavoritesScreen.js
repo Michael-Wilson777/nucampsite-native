@@ -5,10 +5,11 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
 } from "react-native";
 import { SwipeRow } from "react-native-swipe-list-view";
 import { Avatar, ListItem } from "react-native-elements";
+import * as Animatable from "react-native-animatable";
 import Loading from "../components/LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
 import { toggleFavorite } from "../features/favorites/favoritesSlice";
@@ -25,28 +26,30 @@ const FavoritesScreen = ({ navigation }) => {
     return (
       <SwipeRow rightOpenValue={-100}>
         <View style={styles.deleteView}>
-          <TouchableOpacity 
-            style={styles.deleteTouchable} 
-            onPress={() => Alert.alert(
-              'Delete Favorite?',
-              'Are you sure you wish to delete the favorite campsite' +
-              campsite.name +
-              '?',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => console.log(campsite.name + 'Not Deleted'),
-                  style: 'cancel'
-                },
-                {
-                  text: 'OK',
-                  onPress: () => dispatch(toggleFavorite(campsite.id))
-                }
-              ],
-              {cancelable: false}
-            )}
+          <TouchableOpacity
+            style={styles.deleteTouchable}
+            onPress={() =>
+              Alert.alert(
+                "Delete Favorite?",
+                "Are you sure you wish to delete the favorite campsite" +
+                  campsite.name +
+                  "?",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log(campsite.name + "Not Deleted"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => dispatch(toggleFavorite(campsite.id)),
+                  },
+                ],
+                { cancelable: false }
+              )
+            }
           >
-              <Text style={styles.delete}>Delete</Text>
+            <Text style={styles.delete}>Delete</Text>
           </TouchableOpacity>
         </View>
         <View>
@@ -80,40 +83,39 @@ const FavoritesScreen = ({ navigation }) => {
     );
   }
   return (
-    <FlatList
-      data={campsitesArray.filter((campsite) =>
-        favorites.includes(campsite.id)
-      )}
-      renderItem={renderFavoriteItem}
-      keyExtractor={(item) => item.id.toString()}
-    />
+    <Animatable.View animation="fadeInRightBig" duration={2000}>
+      <FlatList
+        data={campsitesArray.filter((campsite) =>
+          favorites.includes(campsite.id)
+        )}
+        renderItem={renderFavoriteItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </Animatable.View>
   );
 };
 
 const styles = StyleSheet.create({
+  deleteView: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flex: 1,
+  },
 
-    deleteView: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      flex: 1
-    },
-    
-    deleteTouchable: {
-      backgroundColor: 'red',
-      height: '100%',
-      justifyContent: 'center'
-    },
+  deleteTouchable: {
+    backgroundColor: "red",
+    height: "100%",
+    justifyContent: "center",
+  },
 
-    deleteText: {
-      color: 'white',
-      fontWeight: '700',
-      textAlign: 'center',
-      fontSize: 16,
-      width: 100
-    }
-
-  }
-)
+  deleteText: {
+    color: "white",
+    fontWeight: "700",
+    textAlign: "center",
+    fontSize: 16,
+    width: 100,
+  },
+});
 
 export default FavoritesScreen;
