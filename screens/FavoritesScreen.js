@@ -49,7 +49,7 @@ const FavoritesScreen = ({ navigation }) => {
               )
             }
           >
-            <Text style={styles.delete}>Delete</Text>
+            <Text style={styles.deleteText}>Delete</Text>
           </TouchableOpacity>
         </View>
         <View>
