@@ -7,8 +7,10 @@ import {
   Switch,
   Button,
   Platform,
+  Alert
 } from "react-native";
 import * as Animatable from "react-native-animatable";
+import * as Notifications from "expo-notifications";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { toggleFavorite } from "../features/favorites/favoritesSlice";
@@ -33,19 +35,22 @@ const ReservationScreen = () => {
     // setShowModal(!showModal);
     Alert.alert(
       "Begin Search?",
-      `Number of Campers: ${campers}/n/nHike In? ${hikeIn}/n/nDate: ${date}`,
+      `Number of Campers: ${campers}\n\nHike In? ${hikeIn}\n\nDate: ${date}`,
       [
         {
           text: "Cancel",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "OK",
-          onPress: () => resetForm()
-        }
+          onPress: () => {
+            presentLocalNotification(date.toLocaleDateString("en-US"));
+            resetForm();
+          },
+        },
       ],
-      {cancellable: false}
-    )
+      { cancellable: false }
+    );
   };
 
   const resetForm = () => {
@@ -55,9 +60,37 @@ const ReservationScreen = () => {
     setShowCalendar(false);
   };
 
+  const presentLocalNotification = async (reservationDate) => {
+    const sendNotification = () => {
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: true,
+        }),
+      });
+
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Your Campsite Reservation Search",
+          body: `Search for ${reservationDate} requested`,
+        },
+        trigger: null,
+      });
+    };
+
+    let permissions = await Notifications.getPermissionsAsync();
+    if (!permissions.granted) {
+      permissions = await Notifications.requestPermissionsAsync();
+    }
+    if (permissions.granted) {
+      sendNotification();
+    }
+  };
+
   return (
     <ScrollView>
-      <Animatable.View animation='zoomin' duration={2000} delay={1000}>
+      <Animatable.View animation="zoomIn" duration={2000} delay={1000}>
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Number of Campers:</Text>
 
@@ -114,7 +147,6 @@ const ReservationScreen = () => {
           />
         </View>
       </Animatable.View>
-      
 
       {/* <Modal
         animationType="slide"
