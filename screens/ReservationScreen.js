@@ -7,7 +7,7 @@ import {
   Switch,
   Button,
   Platform,
-  Alert
+  Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import * as Notifications from "expo-notifications";
@@ -75,7 +75,7 @@ const ReservationScreen = () => {
           title: "Your Campsite Reservation Search",
           body: `Search for ${reservationDate} requested`,
         },
-        trigger: null,
+        trigger: null, //used to schedule a notification
       });
     };
 
